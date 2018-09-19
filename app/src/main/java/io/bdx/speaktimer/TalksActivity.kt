@@ -22,7 +22,6 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
     private val TAG = TalksActivity::class.java.simpleName
 
     private val BASE_URL = "http://appv3.voxxr.in/"
-    private val TALK_DATA = "TALK_DATA"
     private var mCompositeDisposable: CompositeDisposable? = null
     private var mAdapter: TalkAdapter? = null
 
@@ -38,7 +37,6 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
 
 
     private fun initRecyclerView() {
-
         rv_talks_list.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         rv_talks_list.layoutManager = layoutManager
@@ -70,7 +68,7 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
     }
 
     override fun onItemClick(talk: Talk) {
-        startActivity(NiceCountdown.newIntent(this, talk))
+        startActivity(CountdownActivity.newIntent(this, talk))
     }
 
 }

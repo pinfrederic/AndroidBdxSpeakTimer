@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
 import io.bdx.speaktimer.model.Talk
-import kotlinx.android.synthetic.main.activity_nice_countdown.*
-import kotlinx.android.synthetic.main.content_nice_countdown.*
+import kotlinx.android.synthetic.main.activity_countdown.*
+import kotlinx.android.synthetic.main.content_countdown.*
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
@@ -17,14 +17,14 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class NiceCountdown : AppCompatActivity() {
+class CountdownActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_nice_countdown)
+        setContentView(R.layout.activity_countdown)
         setSupportActionBar(toolbar)
 
-        val talk = intent.extras?.get("TALK_DATA") as Talk
+        val talk = intent.extras?.get(TALK_DATA) as Talk
         val from = LocalDateTime.parse(talk.from, DateTimeFormatter.ISO_DATE_TIME)
         val to = LocalDateTime.parse(talk.to, DateTimeFormatter.ISO_DATE_TIME)
 
@@ -54,10 +54,11 @@ class NiceCountdown : AppCompatActivity() {
 
     companion object {
 
-        fun newIntent(context: Context, talk: Talk): Intent {
+        private val TALK_DATA = "TALK_DATA"
 
-            val intent = Intent(context, NiceCountdown::class.java)
-            intent.putExtra("TALK_DATA", talk)
+        fun newIntent(context: Context, talk: Talk): Intent {
+            val intent = Intent(context, CountdownActivity::class.java)
+            intent.putExtra(TALK_DATA, talk)
             return intent
         }
 
