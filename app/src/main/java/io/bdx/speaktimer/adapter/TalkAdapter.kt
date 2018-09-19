@@ -10,17 +10,16 @@ import io.bdx.speaktimer.model.Talk
 
 import kotlinx.android.synthetic.main.adapter_talk.view.*
 
-class TalkAdapter (private val dataList : ArrayList<Talk>, private val listener : Listener) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
+class TalkAdapter(private val dataList: ArrayList<Talk>, private val listener: Listener) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
 
     interface Listener {
 
-        fun onItemClick(talk : Talk)
+        fun onItemClick(talk: Talk)
     }
 
-    private val colors : Array<String> = arrayOf("#EF5350", "#EC407A", "#AB47BC", "#7E57C2", "#5C6BC0", "#42A5F5")
+    private val colors: Array<String> = arrayOf("#EF5350", "#EC407A", "#AB47BC", "#7E57C2", "#5C6BC0", "#42A5F5")
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bind(dataList[position], listener, colors, position)
     }
 
@@ -33,16 +32,16 @@ class TalkAdapter (private val dataList : ArrayList<Talk>, private val listener 
         return ViewHolder(view)
     }
 
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(android: Talk, listener: Listener, colors : Array<String>, position: Int) {
+        fun bind(talk: Talk, listener: Listener, colors: Array<String>, position: Int) {
 
-            itemView.tv_name.text = android.title
-            itemView.tv_version.text = android.summary
-            itemView.tv_api_level.text = android.eventId
+            itemView.title.text = talk.title
+            itemView.recap.text = talk.summary
+            itemView.eventId.text = talk.eventId
             itemView.setBackgroundColor(Color.parseColor(colors[position % 6]))
 
-            itemView.setOnClickListener{ listener.onItemClick(android) }
+            itemView.setOnClickListener { listener.onItemClick(talk) }
         }
     }
 }

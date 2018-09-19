@@ -31,7 +31,7 @@ class NiceCountdown : AppCompatActivity() {
         val duration = Duration.between(from, to)
         progressBarCircle.max = (duration.toMillis() / 1000).toInt()
 
-        val countdown = object: CountDownTimer(duration.toMillis(), 1000) {
+        val countdown = object : CountDownTimer(duration.toMillis(), 1000) {
             override fun onFinish() {
                 MediaPlayer.create(applicationContext, R.raw.sound2).start()
             }

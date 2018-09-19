@@ -1,7 +1,5 @@
 package io.bdx.speaktimer
 
-import android.content.Context
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -21,39 +19,32 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
 
-    private val TAG = MainActivity::class.java.simpleName
+    private val TAG = TalksActivity::class.java.simpleName
 
     private val BASE_URL = "http://appv3.voxxr.in/"
     private val TALK_DATA = "TALK_DATA"
     private var mCompositeDisposable: CompositeDisposable? = null
-    private var mTalksArrayList: java.util.ArrayList<Talk>? = null
-
-
-    private var mAndroidArrayList: ArrayList<Talk>? = null
-
     private var mAdapter: TalkAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talks)
 
-
         mCompositeDisposable = CompositeDisposable()
 
         initRecyclerView()
-
-        loadJSON()
+        loadTalks()
     }
 
 
     private fun initRecyclerView() {
 
-        rv_android_list.setHasFixedSize(true)
-        val layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(this)
-        rv_android_list.layoutManager = layoutManager
+        rv_talks_list.setHasFixedSize(true)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
+        rv_talks_list.layoutManager = layoutManager
     }
 
-    private fun loadJSON() {
+    private fun loadTalks() {
 
         val requestInterface = Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -69,35 +60,17 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
     }
 
     private fun handleResponse(talkList: List<Talk>) {
-
-        mAndroidArrayList = ArrayList(talkList)
-        mAdapter = TalkAdapter(mAndroidArrayList!!, this)
-
-        rv_android_list.adapter = mAdapter
+        mAdapter = TalkAdapter(ArrayList(talkList), this)
+        rv_talks_list.adapter = mAdapter
     }
 
     private fun handleError(error: Throwable) {
-
         Log.d(TAG, error.localizedMessage)
-
-        Toast.makeText(this, "Error ${error.localizedMessage}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Error ${error.localizedMessage}", Toast.LENGTH_LONG).show()
     }
 
     override fun onItemClick(talk: Talk) {
-
         startActivity(NiceCountdown.newIntent(this, talk))
-
-
-    }
-
-    companion object {
-
-        fun newIntent(context: Context): Intent {
-
-            val intent = Intent(context, TalksActivity::class.java)
-            return intent
-        }
-
     }
 
 }
