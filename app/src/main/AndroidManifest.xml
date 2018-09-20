@@ -22,7 +22,7 @@
 
         <activity
             android:name=".CountdownActivity"
-            android:label="@string/title_activity_nice_countdown"
+            android:label="@string/title_activity_countdown"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

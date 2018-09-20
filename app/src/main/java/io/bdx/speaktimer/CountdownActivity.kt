@@ -6,9 +6,11 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import io.bdx.speaktimer.model.Talk
 import kotlinx.android.synthetic.main.activity_countdown.*
 import kotlinx.android.synthetic.main.content_countdown.*
+import org.apache.commons.lang3.time.DurationFormatUtils
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
@@ -30,6 +32,11 @@ class CountdownActivity : AppCompatActivity() {
 
         val duration = Duration.between(from, to)
         progressBarCircle.max = (duration.toMillis() / 1000).toInt()
+        progressBarCircle.progress = (duration.toMillis() / 1000).toInt()
+        textViewTime.text = DurationFormatUtils.formatDuration(duration.toMillis(), "mm:ss")
+
+        val now = LocalDateTime.now()
+        val isCurrentEvent = now.isAfter(from) && now.isBefore(to)
 
         val countdown = object : CountDownTimer(duration.toMillis(), 1000) {
             override fun onFinish() {
@@ -43,11 +50,17 @@ class CountdownActivity : AppCompatActivity() {
                 val from = LocalDateTime.ofInstant(Instant.ofEpochMilli(millisUntilFinished), ZoneId.systemDefault())
                 val formatter = DateTimeFormatter.ofPattern("mm:ss", Locale.FRANCE)
                 textViewTime.text = from.format(formatter)
-
             }
 
         }
-        countdown.start()
+        if (isCurrentEvent) {
+            tv_not_started.visibility = View.INVISIBLE
+            countdown.start()
+        } else {
+            tv_not_started.visibility = View.VISIBLE
+        }
+
+        btn_start_anyway.setOnClickListener { countdown.start(); btn_start_anyway.isEnabled = false }
 
     }
 
