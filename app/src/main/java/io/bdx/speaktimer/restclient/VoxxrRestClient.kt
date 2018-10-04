@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface VoxxrRestClient {
 
-    @GET("api/days/5b9ac2d45b2e1d3ec25cd0a8/presentations")
+    @GET("api/days/5ba95365e4b0b618af601b1a/presentations")
     fun getTalks(): Observable<List<Talk>>
 }

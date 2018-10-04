@@ -1,21 +1,19 @@
 package io.bdx.speaktimer
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.bdx.speaktimer.adapter.TalkAdapter
 import io.bdx.speaktimer.model.Talk
-import io.bdx.speaktimer.restclient.VoxxrRestClient
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_talks.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import java.util.stream.Collectors
 
 class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
 
@@ -38,22 +36,33 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
 
     private fun initRecyclerView() {
         rv_talks_list.setHasFixedSize(true)
-        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         rv_talks_list.layoutManager = layoutManager
     }
 
     private fun loadTalks() {
 
-        val requestInterface = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(VoxxrRestClient::class.java)
+//        val requestInterface = Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build().create(VoxxrRestClient::class.java)
+//
+//        mCompositeDisposable?.add(requestInterface.getTalks()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponse, this::handleError))
 
-        mCompositeDisposable?.add(requestInterface.getTalks()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError))
+
+        val text = resources.openRawResource(R.raw.sample).bufferedReader().use { it.readText() }
+        val mapper = jacksonObjectMapper()
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val talksList: List<Talk> = mapper.readValue(text)
+
+        Log.i(TAG, talksList.stream().map { it.title }.collect(Collectors.toList()).toString())
+        handleResponse(talksList)
+
+
 
     }
 
