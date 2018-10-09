@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.bdx.speaktimer.adapter.TalkAdapter
 import io.bdx.speaktimer.model.Talk
 import io.reactivex.Observable
@@ -18,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_talks.*
-import java.util.stream.Collectors
+
 
 class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
 
@@ -28,6 +26,7 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
     private var mCompositeDisposable: CompositeDisposable? = null
     private var mAdapter: TalkAdapter? = null
     private var disposable: Disposable? = null
+    private val mapper = createMapper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,23 +82,26 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener {
     }
 
     private fun handleError(error: Throwable) {
-        Log.e(TAG, error.toString())
-//        Toast.makeText(this, "Error ${error.localizedMessage}", Toast.LENGTH_LONG).show()
         pbWaiting.visibility = View.GONE
-
         throw error
+    }
+
+    private fun createMapper(): ObjectMapper {
+        val mapper = jacksonObjectMapper()
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        return mapper
     }
 
     override fun onItemClick(talk: Talk) {
         startActivity(CountdownActivity.newIntent(this, talk))
     }
 
-    fun getTalks() : Observable<List<Talk>> {
+    private fun getTalks() : Observable<List<Talk>> {
+        val text = resources.openRawResource(R.raw.sample).bufferedReader().use { it.readText() }
+        val typeFactory = mapper.typeFactory
+        val collectionType = typeFactory.constructCollectionType(ArrayList::class.java, Talk::class.java)
         return Observable.create<List<Talk>> {
-            val text = resources.openRawResource(R.raw.sample).bufferedReader().use { it.readText() }
-            val mapper = jacksonObjectMapper()
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            mapper.readValue(text)
+            mapper.readValue(text, collectionType)
         }
     }
 
