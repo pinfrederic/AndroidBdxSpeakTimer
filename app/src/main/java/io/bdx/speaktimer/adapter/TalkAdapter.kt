@@ -10,7 +10,7 @@ import io.bdx.speaktimer.model.Talk
 
 import kotlinx.android.synthetic.main.adapter_talk.view.*
 
-class TalkAdapter(private val dataList: ArrayList<Talk>, private val listener: Listener) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
+class TalkAdapter(var dataList: ArrayList<Talk>, private val listener: Listener) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
 
     interface Listener {
 
