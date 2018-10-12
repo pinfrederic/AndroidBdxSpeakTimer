@@ -38,7 +38,7 @@ class TalkAdapter(var dataList: ArrayList<Talk>, private val listener: Listener)
 
             itemView.title.text = talk.title
             itemView.recap.text = talk.summary
-            itemView.eventId.text = talk.eventId
+            itemView.eventId.text = talk.eventId + " - " + talk.location?.name
             itemView.setBackgroundColor(Color.parseColor(colors[position % 6]))
 
             itemView.setOnClickListener { listener.onItemClick(talk) }

@@ -116,9 +116,9 @@
             "creationDate": null,
             "updateDate": "2018-09-24T21:13:10.855Z",
             "eventId": "bdxio18",
-            "name": "N/C",
+            "name": "Room 2",
             "fullName": "N/C",
-            "_id": "5ba95365e4b0b618af601b19"
+            "_id": "02"
         },
         "from": "2018-11-09T09:00:00.000Z",
         "to": "2018-11-09T10:00:00.000Z",
@@ -160,9 +160,9 @@
             "creationDate": null,
             "updateDate": "2018-09-24T21:13:10.855Z",
             "eventId": "bdxio18",
-            "name": "N/C",
+            "name": "Room 2",
             "fullName": "N/C",
-            "_id": "5ba95365e4b0b618af601b19"
+            "_id": "02"
         },
         "from": "2018-11-09T09:00:00.000Z",
         "to": "2018-11-09T10:00:00.000Z",
@@ -263,9 +263,9 @@
             "creationDate": null,
             "updateDate": "2018-09-24T21:13:10.855Z",
             "eventId": "bdxio18",
-            "name": "N/C",
+            "name": "Room 3",
             "fullName": "N/C",
-            "_id": "5ba95365e4b0b618af601b19"
+            "_id": "03"
         },
         "from": "2018-11-09T10:00:00.000Z",
         "to": "2018-11-09T11:00:00.000Z",

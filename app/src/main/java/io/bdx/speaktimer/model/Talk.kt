@@ -7,5 +7,6 @@ data class Talk(
         val title: String,
         val summary: String,
         val from: String,
-        val to: String
+        val to: String,
+        val location: Location
 ) : Serializable
