@@ -14,15 +14,50 @@
         android:scaleType="centerCrop"
         android:src="@drawable/header_bg" />
 
-    <TextView
-        android:id="@+id/tv_not_started"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="30dp"
-        android:text="@string/talk_not_started_label"
-        android:textColor="@color/colorYellow"
-        android:textSize="25sp" />
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vous êtes en salle :"
+            android:textColor="@color/colorYellow"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:text="B102"
+            android:textColor="@color/colorYellow"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_talk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Conférence en cours :"
+            android:textColor="@color/colorYellow"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_talk_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:text="@string/no_condference_now"
+            android:textColor="@color/colorYellow"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/timer_layout"
@@ -70,12 +105,12 @@
         android:id="@+id/btn_start_anyway"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_anyway"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_selector"
-        android:textColor="@drawable/btn_text_color"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:text="@string/start_anyway"
+        android:textColor="@drawable/btn_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

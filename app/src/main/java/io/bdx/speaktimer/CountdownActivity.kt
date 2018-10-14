@@ -54,10 +54,10 @@ class CountdownActivity : AppCompatActivity() {
 
         }
         if (isCurrentEvent) {
-            tv_not_started.visibility = View.INVISIBLE
+            tv_talk_name.visibility = View.INVISIBLE
             countdown.start()
         } else {
-            tv_not_started.visibility = View.VISIBLE
+            tv_talk_name.visibility = View.VISIBLE
         }
 
         btn_start_anyway.setOnClickListener { countdown.start(); btn_start_anyway.isEnabled = false }
