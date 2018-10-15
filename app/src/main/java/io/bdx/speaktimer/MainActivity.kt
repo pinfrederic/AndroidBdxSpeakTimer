@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.bdx.speaktimer.model.Location
 import io.bdx.speaktimer.model.Talk
 import io.bdx.speaktimer.ui.main.TimerFragment
 import io.reactivex.Observable
@@ -21,6 +22,8 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.activity_talks_child.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val mCompositeDisposable = CompositeDisposable()
     private val mapper = createMapper()
     private lateinit var talkList: List<Talk>
+    private lateinit var byLocation: Map<Location, List<Talk>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.talkList = talkList
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, TimerFragment.newInstance(talkList[0]))
+                .replace(R.id.fragmentContainer, TimerFragment.newInstance(this.talkList[0], this.talkList[0].location.name))
                 .commitNow()
 
         setRoomsInMenu()
@@ -70,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setRoomsInMenu() {
         val subMenu = menu.addSubMenu(1, 2, 0, "Rooms")
-        val byLocation = this.talkList.groupBy { talk -> talk.location }
+        byLocation = this.talkList.groupBy { talk -> talk.location }
         for (location in byLocation.keys.withIndex()) {
             subMenu.add(1, location.index, location.index, location.value.name)
         }
@@ -107,15 +111,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             else -> {
-                Toast.makeText(this, "The room with id ${item.itemId} was clicked!", Toast.LENGTH_LONG).show()
+                val location = this.byLocation.keys.withIndex().elementAt(item.itemId).value
+                val talk = getCurrentTalk(byLocation.getOrDefault(location, Collections.emptyList<Talk>()))
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, TimerFragment.newInstance(this.talkList[item.itemId]))
+                        .replace(R.id.fragmentContainer, TimerFragment.newInstance(talk, location.name))
                         .commitNow()
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return false
+    }
+
+    private fun getCurrentTalk(talks: List<Talk>): Talk? {
+        return talks.filter { talk -> isCurrent(talk) }.getOrNull(0)
+    }
+
+    private fun isCurrent(talk: Talk): Boolean {
+        var from = LocalDateTime.parse(talk.from, DateTimeFormatter.ISO_DATE_TIME)
+        var to = LocalDateTime.parse(talk.to, DateTimeFormatter.ISO_DATE_TIME)
+        val now = LocalDateTime.now()
+        from = from.withDayOfYear(now.dayOfYear)
+        to = to.withDayOfYear(now.dayOfYear)
+
+        return now.isAfter(from) && now.isBefore(to)
     }
 
 }

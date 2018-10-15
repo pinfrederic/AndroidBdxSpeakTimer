@@ -60,8 +60,6 @@ class CountdownActivity : AppCompatActivity() {
             tv_talk_name.visibility = View.VISIBLE
         }
 
-        btn_start_anyway.setOnClickListener { countdown.start(); btn_start_anyway.isEnabled = false }
-
     }
 
 
