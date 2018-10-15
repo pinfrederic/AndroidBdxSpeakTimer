@@ -20,7 +20,7 @@ class TalksFragment : Fragment() {
 
     companion object {
 
-        private val TALK_LIST = "TALK_LIST"
+        private const val TALK_LIST = "TALK_LIST"
 
         fun newInstance(talksList: ArrayList<Talk>): TalksFragment {
             val talksFragment = TalksFragment()

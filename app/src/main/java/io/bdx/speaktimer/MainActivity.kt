@@ -1,20 +1,20 @@
 package io.bdx.speaktimer
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.bdx.speaktimer.model.Location
 import io.bdx.speaktimer.model.Talk
-import io.bdx.speaktimer.ui.main.TimerFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,8 +26,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
-import android.content.Intent
-import android.net.Uri
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +35,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val mapper = createMapper()
     private lateinit var talkList: List<Talk>
     private lateinit var byLocation: Map<Location, List<Talk>>
+
+    companion object {
+
+        private const val MENU_PROGRAM_ID = 42
+        private const val MENU_CREDITS_ID = 43
+        private const val MENU_ROOMS_ID = 2
+
+        private const val MENU_ROOMS_POSITION = 0
+        private const val MENU_PROGRAM_POSITION = 1
+        private const val MENU_CREDITS_POSITION = 2
+
+        private const val MENU_ROOMS_GROUPS = 1
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +62,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         menu = nav_view.menu
-        menu.add(Menu.NONE, 42, 1, "Programme")
-        menu.add(Menu.NONE, 43, 2, "Credits")
+        menu.add(Menu.NONE, MENU_PROGRAM_ID, MENU_PROGRAM_POSITION, getString(R.string.program))
+        menu.add(Menu.NONE, MENU_CREDITS_ID, MENU_CREDITS_POSITION, getString(R.string.credits))
 
 
         loadTalks()
@@ -62,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mCompositeDisposable.add(getTalks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-//                .delaySubscription(2000, TimeUnit.MILLISECONDS)
+//                .delaySubscription(2000, TimeUnit.MILLISECONDS) //For testing web latency
                 .subscribe({ result -> handleResponse(result) }, { error -> handleError(error) }))
     }
 
@@ -77,10 +89,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setRoomsInMenu() {
-        val subMenu = menu.addSubMenu(1, 2, 0, "Rooms")
+        val subMenu = menu.addSubMenu(MENU_ROOMS_GROUPS, MENU_ROOMS_ID, MENU_ROOMS_POSITION, getString(R.string.rooms))
         byLocation = this.talkList.groupBy { talk -> talk.location }
         for (location in byLocation.keys.withIndex()) {
-            subMenu.add(1, location.index, location.index, location.value.name)
+            subMenu.add(MENU_ROOMS_GROUPS, location.index, location.index, location.value.name)
         }
     }
 
@@ -107,12 +119,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            42 -> {
+            MENU_PROGRAM_ID -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talkList)))
                         .commitNow()
             }
-            43 -> {
+            MENU_CREDITS_ID -> {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://bordeaux.zenika.com/"))
                 startActivity(browserIntent)
             }
@@ -133,12 +145,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return talks.filter { talk -> isCurrent(talk) }.getOrNull(0)
     }
 
-    private fun isCurrent(talk: Talk): Boolean {
+    fun isCurrent(talk: Talk): Boolean {
         var from = LocalDateTime.parse(talk.from, DateTimeFormatter.ISO_DATE_TIME)
         var to = LocalDateTime.parse(talk.to, DateTimeFormatter.ISO_DATE_TIME)
         val now = LocalDateTime.now()
+
+        /*** Set the bdx.io date to today ***/
         from = from.withDayOfYear(now.dayOfYear)
         to = to.withDayOfYear(now.dayOfYear)
+        /*** **************************** ***/
 
         return now.isAfter(from) && now.isBefore(to)
     }

@@ -5,4 +5,7 @@
     <string name="no_condference_now">Aucune</string>
     <string name="start_anyway">(Démarrer quand même)</string>
     <string name="minutes">minutes</string>
+    <string name="program">Programme</string>
+    <string name="credits">Credits</string>
+    <string name="rooms">Rooms</string>
 </resources>
