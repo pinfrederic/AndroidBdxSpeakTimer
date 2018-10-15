@@ -26,6 +26,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import android.content.Intent
+import android.net.Uri
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -110,8 +113,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .commitNow()
             }
             43 -> {
-                Toast.makeText(this, "Credits, licence & info", Toast.LENGTH_LONG).show()
-
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://bordeaux.zenika.com/"))
+                startActivity(browserIntent)
             }
             else -> {
                 val location = this.byLocation.keys.withIndex().elementAt(item.itemId).value
@@ -123,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
-        return false
+        return true
     }
 
     private fun getCurrentTalk(talks: List<Talk>): Talk? {
