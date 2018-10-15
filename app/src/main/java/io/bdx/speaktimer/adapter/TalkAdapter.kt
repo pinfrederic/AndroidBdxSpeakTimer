@@ -10,7 +10,7 @@ import io.bdx.speaktimer.model.Talk
 
 import kotlinx.android.synthetic.main.adapter_talk.view.*
 
-class TalkAdapter(var dataList: ArrayList<Talk>, private val listener: Listener) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
+class TalkAdapter(var dataList: ArrayList<Talk>) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
 
     interface Listener {
 
@@ -20,7 +20,7 @@ class TalkAdapter(var dataList: ArrayList<Talk>, private val listener: Listener)
     private val colors: Array<String> = arrayOf("#EF5350", "#EC407A", "#AB47BC", "#7E57C2", "#5C6BC0", "#42A5F5")
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataList[position], listener, colors, position)
+        holder.bind(dataList[position], colors, position)
     }
 
     override fun getItemCount(): Int = dataList.count()
@@ -34,14 +34,13 @@ class TalkAdapter(var dataList: ArrayList<Talk>, private val listener: Listener)
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(talk: Talk, listener: Listener, colors: Array<String>, position: Int) {
+        fun bind(talk: Talk, colors: Array<String>, position: Int) {
 
             itemView.title.text = talk.title
             itemView.recap.text = talk.summary
             itemView.eventId.text = talk.eventId + " - " + talk.location?.name
             itemView.setBackgroundColor(Color.parseColor(colors[position % 6]))
 
-            itemView.setOnClickListener { listener.onItemClick(talk) }
         }
     }
 }

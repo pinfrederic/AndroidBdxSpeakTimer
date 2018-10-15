@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.talkList = talkList
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, TimerFragment.newInstance(this.talkList[0], this.talkList[0].location.name))
+                .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talkList)))
                 .commitNow()
 
         setRoomsInMenu()
@@ -104,7 +105,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId) {
             42 -> {
-                Toast.makeText(this, "Program", Toast.LENGTH_LONG).show()
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talkList)))
+                        .commitNow()
             }
             43 -> {
                 Toast.makeText(this, "Credits, licence & info", Toast.LENGTH_LONG).show()

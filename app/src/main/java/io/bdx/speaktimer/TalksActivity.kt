@@ -31,7 +31,7 @@ class TalksActivity : AppCompatActivity(), TalkAdapter.Listener, NavigationView.
 
     private val BASE_URL = "http://appv3.voxxr.in/"
     private val mCompositeDisposable = CompositeDisposable()
-    private val mAdapter = TalkAdapter(ArrayList(Collections.emptyList()), this)
+    private val mAdapter = TalkAdapter(ArrayList(Collections.emptyList()))
     private val mapper = createMapper()
     private lateinit var menu: Menu
 
