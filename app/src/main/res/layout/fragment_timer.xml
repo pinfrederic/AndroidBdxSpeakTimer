@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/header_bg" />
+        android:src="@drawable/background" />
 
     <LinearLayout
         android:id="@+id/layout_recap"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="30dp"
-            android:text="@string/no_condference_now"
+            android:text="@string/no_conference_now"
             android:textColor="@color/colorYellow"
             android:textSize="20sp"
             android:textStyle="bold" />

@@ -8,7 +8,7 @@ import android.view.*
 import io.bdx.speaktimer.adapter.TalkAdapter
 import io.bdx.speaktimer.model.Talk
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_talks_child.*
+import kotlinx.android.synthetic.main.fragment_talks.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,7 +33,7 @@ class TalksFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.activity_talks_child, container, false)
+        return inflater.inflate(R.layout.fragment_talks, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.bdx.speaktimer.model.Talk
-import kotlinx.android.synthetic.main.content_countdown.*
+import kotlinx.android.synthetic.main.fragment_timer.*
 import org.apache.commons.lang3.time.DurationFormatUtils
 import java.time.Duration
 import java.time.Instant
@@ -41,7 +41,7 @@ class TimerFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.content_countdown, container, false)
+        return inflater.inflate(R.layout.fragment_timer, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
