@@ -8,4 +8,9 @@
     <string name="program">Programme</string>
     <string name="credits">Credits</string>
     <string name="rooms">Rooms</string>
+    <string name="synchronization">Mettre à jour le programme</string>
+    <string name="synchro_url">Synchro Url</string>
+    <string name="url_hint">http://appv3.voxxr.in/…</string>
+    <string name="server_url_label">Url du serveur</string>
+    <string name="set_default_label">Set Default</string>
 </resources>

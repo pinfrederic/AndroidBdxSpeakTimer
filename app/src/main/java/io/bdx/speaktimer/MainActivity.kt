@@ -1,5 +1,7 @@
 package io.bdx.speaktimer
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.options_dialog.view.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -44,6 +47,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         private const val MENU_CREDITS_POSITION = 2
 
         private const val MENU_ROOMS_GROUPS = 1
+
+        private const val PREF_SERVER_URL = "PREF_SERVER_URL"
+        private const val DEFAULT_SERVER_URL = "https://app.voxxr.in/api/days/5bc25e6fe4b05b8d2a14506f/presentations"
 
     }
 
@@ -152,6 +158,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         /*** **************************** ***/
 
         return now.isAfter(from) && now.isBefore(to)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu to use in the action bar
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_sync -> {
+                return true
+            }
+            R.id.action_sync_set_url -> {
+                displayUrlPopup()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun displayUrlPopup() {
+        val dialogView = layoutInflater.inflate(R.layout.options_dialog, null)
+        val preferences = getPreferences(Context.MODE_PRIVATE)
+
+        dialogView.serverUrlText.setText(preferences.getString(PREF_SERVER_URL, DEFAULT_SERVER_URL))
+
+        AlertDialog.Builder(this)
+                .setTitle(getString(R.string.server_url_label))
+                .setView(dialogView)
+                .setPositiveButton(android.R.string.ok) { _, _ -> preferences.edit().putString(PREF_SERVER_URL, dialogView.serverUrlText.text.toString()).apply() }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                .setNeutralButton(getString(R.string.set_default_label)) { dialog, _ ->
+                    preferences.edit().putString(PREF_SERVER_URL, DEFAULT_SERVER_URL).apply()
+                    dialog.dismiss()
+                }
+                .show()
     }
 
 }
