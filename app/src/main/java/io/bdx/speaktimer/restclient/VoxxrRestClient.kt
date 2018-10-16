@@ -8,4 +8,5 @@ interface VoxxrRestClient {
 
     @GET("api/days/5ba95365e4b0b618af601b1a/presentations")
     fun getTalks(): Observable<List<Talk>>
+
 }

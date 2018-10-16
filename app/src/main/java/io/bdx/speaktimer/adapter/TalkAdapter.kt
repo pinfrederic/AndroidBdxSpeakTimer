@@ -9,13 +9,13 @@ import io.bdx.speaktimer.R
 import io.bdx.speaktimer.model.Talk
 import kotlinx.android.synthetic.main.adapter_talk.view.*
 
-class TalkAdapter(var dataList: ArrayList<Talk>) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
+class TalkAdapter(var talks: ArrayList<Talk>) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataList[position])
+    override fun onBindViewHolder(holder: ViewHolder, index: Int) {
+        holder.bind(talks[index])
     }
 
-    override fun getItemCount(): Int = dataList.count()
+    override fun getItemCount(): Int = talks.count()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_talk, parent, false)

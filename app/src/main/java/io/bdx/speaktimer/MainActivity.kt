@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var menu: Menu
     private val mCompositeDisposable = CompositeDisposable()
     private val mapper = createMapper()
-    private lateinit var talkList: List<Talk>
+    private lateinit var talks: List<Talk>
     private lateinit var byLocation: Map<Location, List<Talk>>
 
     companion object {
@@ -75,11 +75,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribe({ result -> handleResponse(result) }, { error -> handleError(error) }))
     }
 
-    private fun handleResponse(talkList: List<Talk>) {
-        this.talkList = talkList
+    private fun handleResponse(talks: List<Talk>) {
+        this.talks = talks
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talkList)))
+                .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talks)))
                 .commitNow()
 
         setRoomsInMenu()
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setRoomsInMenu() {
         val subMenu = menu.addSubMenu(MENU_ROOMS_GROUPS, MENU_ROOMS_ID, MENU_ROOMS_POSITION, getString(R.string.rooms))
-        byLocation = this.talkList.groupBy { talk -> talk.location }
+        byLocation = this.talks.groupBy { talk -> talk.location }
         for (location in byLocation.keys.withIndex()) {
             subMenu.add(MENU_ROOMS_GROUPS, location.index, location.index, location.value.name)
         }
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             MENU_PROGRAM_ID -> {
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talkList)))
+                        .replace(R.id.fragmentContainer, TalksFragment.newInstance(ArrayList(this.talks)))
                         .commitNow()
             }
             MENU_CREDITS_ID -> {
