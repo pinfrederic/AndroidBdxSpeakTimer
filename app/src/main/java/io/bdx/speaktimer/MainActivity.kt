@@ -3,6 +3,7 @@ package io.bdx.speaktimer
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -22,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.options_dialog.view.*
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val mapper = createMapper()
     private lateinit var talkList: List<Talk>
     private lateinit var byLocation: Map<Location, List<Talk>>
+    private lateinit var preferences: SharedPreferences
 
     companion object {
 
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.main_activity)
         setSupportActionBar(toolbar)
         nav_view.setNavigationItemSelectedListener(this)
+        preferences = getPreferences(Context.MODE_PRIVATE)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.app_name, R.string.app_name)
@@ -170,6 +174,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_sync -> {
+                performSynchronization()
                 return true
             }
             R.id.action_sync_set_url -> {
@@ -182,7 +187,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun displayUrlPopup() {
         val dialogView = layoutInflater.inflate(R.layout.options_dialog, null)
-        val preferences = getPreferences(Context.MODE_PRIVATE)
 
         dialogView.serverUrlText.setText(preferences.getString(PREF_SERVER_URL, DEFAULT_SERVER_URL))
 
@@ -196,6 +200,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     dialog.dismiss()
                 }
                 .show()
+    }
+
+    private fun performSynchronization() {
+        val url = preferences.getString(PREF_SERVER_URL, DEFAULT_SERVER_URL)
+
+        val file = File(filesDir, "data.json")
+
+        /**
+         * TODO:
+         * 1- Call server API with okhttp (and retrofit if json support required)
+         * 2- and save the result to a file (not in res folder, see https://stackoverflow.com/a/41320554/2683000)
+         * 3- and then, call loadTalks() as usual.
+         **/
+
     }
 
 }
