@@ -1,4 +1,4 @@
-package io.bdx.speaktimer
+package io.bdx.speaktimer.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.bdx.speaktimer.adapter.TalkAdapter
-import io.bdx.speaktimer.model.Talk
+import io.bdx.speaktimer.R
+import io.bdx.speaktimer.domain.Talk
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_talks.*
 import java.util.*

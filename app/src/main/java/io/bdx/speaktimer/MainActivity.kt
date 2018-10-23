@@ -12,8 +12,10 @@ import android.view.MenuItem
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.bdx.speaktimer.model.Location
-import io.bdx.speaktimer.model.Talk
+import io.bdx.speaktimer.domain.Location
+import io.bdx.speaktimer.domain.Talk
+import io.bdx.speaktimer.ui.TalksFragment
+import io.bdx.speaktimer.ui.TimerFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

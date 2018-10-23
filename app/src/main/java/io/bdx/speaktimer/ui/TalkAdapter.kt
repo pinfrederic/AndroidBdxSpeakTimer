@@ -1,4 +1,4 @@
-package io.bdx.speaktimer.adapter
+package io.bdx.speaktimer.ui
 
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.bdx.speaktimer.R
-import io.bdx.speaktimer.model.Talk
+import io.bdx.speaktimer.domain.Talk
 import kotlinx.android.synthetic.main.adapter_talk.view.*
 
 class TalkAdapter(var talks: ArrayList<Talk>) : RecyclerView.Adapter<TalkAdapter.ViewHolder>() {

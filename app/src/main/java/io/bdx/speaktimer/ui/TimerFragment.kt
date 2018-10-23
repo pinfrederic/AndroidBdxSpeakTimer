@@ -1,4 +1,4 @@
-package io.bdx.speaktimer
+package io.bdx.speaktimer.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.bdx.speaktimer.model.Talk
+import io.bdx.speaktimer.MainActivity
+import io.bdx.speaktimer.R
+import io.bdx.speaktimer.domain.Talk
 import kotlinx.android.synthetic.main.fragment_timer.*
 import org.apache.commons.lang3.time.DurationFormatUtils
 import java.time.Duration
@@ -74,8 +76,8 @@ class TimerFragment : Fragment() {
                     progressBarCircle.progress = (millisUntilFinished / 1000).toInt()
                 }
 
-                val from = LocalDateTime.ofInstant(Instant.ofEpochMilli(millisUntilFinished), ZoneId.systemDefault())
                 if (textViewTime != null) { //FIXME textViewTime should never be null
+                    val from = LocalDateTime.ofInstant(Instant.ofEpochMilli(millisUntilFinished), ZoneId.systemDefault())
                     textViewTime.text = from.format(MINUTE_SECOND_FORMATTER)
                 }
             }

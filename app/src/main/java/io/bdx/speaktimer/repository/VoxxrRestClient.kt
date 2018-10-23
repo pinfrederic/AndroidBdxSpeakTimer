@@ -1,6 +1,6 @@
-package io.bdx.speaktimer.restclient
+package io.bdx.speaktimer.repository
 
-import io.bdx.speaktimer.model.Talk
+import io.bdx.speaktimer.domain.Talk
 import io.reactivex.Observable
 import retrofit2.http.GET
 
