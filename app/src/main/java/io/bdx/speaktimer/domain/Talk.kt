@@ -1,4 +1,4 @@
-package io.bdx.speaktimer.model
+package io.bdx.speaktimer.domain
 
 import java.io.Serializable
 

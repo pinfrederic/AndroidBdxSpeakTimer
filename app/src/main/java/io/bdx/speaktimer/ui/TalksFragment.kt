@@ -1,12 +1,14 @@
-package io.bdx.speaktimer
+package io.bdx.speaktimer.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.*
-import io.bdx.speaktimer.adapter.TalkAdapter
-import io.bdx.speaktimer.model.Talk
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import io.bdx.speaktimer.R
+import io.bdx.speaktimer.domain.Talk
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_talks.*
 import java.util.*
@@ -23,9 +25,9 @@ class TalksFragment : Fragment() {
         private const val TALK_LIST = "TALK_LIST"
 
         fun newInstance(talksList: ArrayList<Talk>): TalksFragment {
-            val talksFragment = TalksFragment()
             val bundle = Bundle()
             bundle.putSerializable(TALK_LIST, talksList)
+            val talksFragment = TalksFragment()
             talksFragment.arguments = bundle
             return talksFragment
         }
@@ -38,18 +40,24 @@ class TalksFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //Display waiting circle
-        pbWaiting.visibility = View.VISIBLE
-
+        displayWaitingCircle()
         initRecyclerView()
+        updateTalksAndNotify()
+        hideWaitingCircle()
+    }
 
-        //Get data from bundle and assign it
-        mAdapter.dataList = arguments!!.getSerializable(TALK_LIST) as ArrayList<Talk>
+    private fun hideWaitingCircle() {
+        pbWaiting.visibility = View.GONE
+    }
+
+    private fun displayWaitingCircle() {
+        pbWaiting.visibility = View.VISIBLE
+    }
+
+    private fun updateTalksAndNotify() {
+        mAdapter.talks = arguments!!.getSerializable(TALK_LIST) as ArrayList<Talk>
         mAdapter.notifyDataSetChanged()
         rv_talks_list.adapter = mAdapter
-
-        //Hide waiting circle
-        pbWaiting.visibility = View.GONE
     }
 
     private fun initRecyclerView() {
